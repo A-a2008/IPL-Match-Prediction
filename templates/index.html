@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+{% load static %}
+<html>
+	<head>
+		<title>IPL Match Predictor</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+	</head>
+	<body class="is-preload">
+		<div id="wrapper">
+
+			<!-- Intro -->
+			<section class="intro">
+				<header>
+					<h1>IPL Match Predictor</h1>
+					{% if not winner and not error_message %}
+					<p>Use our AI to predict the winner of an IPL Match</p>
+					{% elif winner and not error_message %}
+					<p>Please scroll down to reveal the winner</p>
+					{% else %}
+					<p>There was an error, please scroll down to view the details</p>
+					{% endif %}
+					<ul class="actions">
+						<li><a href="#first" class="arrow scrolly"><span class="label">Next</span></a></li>
+					</ul>
+				</header>
+				<div class="content">
+					<span class="image fill" data-position="center"><img src="{% static 'images/ipl-image.png' %}" alt="" /></span>
+				</div>
+			</section>
+
+			<!-- Section -->
+			<section id="first">
+				<header>
+					{% if not winner and not error_message %}
+					<h2>Please enter the necessary data to predict the winner of the match</h2>
+					{% elif winner and not error_message %}
+					<h2>The winner predicted by the AI is</h2>
+					{% else %}
+					<h2>There was an error</h2>
+					{% endif %}
+				</header>
+				<div class="content">
+					{% if not winner and not error_message %}
+					<form action="/predict/" method="post">
+						{% csrf_token %}
+						<input type="text" name="venue" placeholder="Stadium" required><br>
+						<input type="text" name="team1" placeholder="Team 1. Eg: RCB" required><br>
+						<input type="text" name="team2" placeholder="Team 2. Eg: SRH" required><br>
+						<input type="text" name="toss_winner" placeholder="Team which won the toss. Eg: RCB" required><br>
+						<input type="text" name="toss_decision" placeholder="The decision of the toss. Eg: Bat or Bowl" required><br>
+						<input type="submit" class="button primary" value="Predict">
+					</form>
+					{% elif winner and not error_message %}
+					<h3><b>{{ winner }} ({{ short_name }})</b></h3>
+					{% else %}
+					<h3>You have entered an incorrect value in the required data</h3>
+					<p>If you are sure that the data entered was correct, please use this document: <a href="{% url 'how_to_use' %}">Document</a> </p>
+					{% endif %}
+				</div>
+			</section>
+
+		</div>
+
+
+		<!-- Wrapper -->
+			<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+
+		<!-- Scripts -->
+		<script src="{% static 'assets/js/jquery.scrolly.min.js' %}"></script>
+		<script src="{% static 'assets/js/browser.min.js' %}"></script>
+		<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+		<script src="{% static 'assets/js/util.js' %}"></script>
+		<script src="{% static 'assets/js/main.js' %}"></script>
+
+	</body>
+</html>
